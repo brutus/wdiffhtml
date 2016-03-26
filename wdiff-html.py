@@ -8,6 +8,25 @@ The results are modified to use HTML `<ins>` and `<del>` tags and can be
 wrapped in a full HTML document.
 
 
+Template Variables
+------------------
+
+`org_file`
+  Name of the original file.
+
+`new_file`
+  Name of the changed file.
+
+`content`
+  Will contain the (HTMLified) output from `wdiff`.
+
+`css`
+  CSS for the document.
+
+`js`
+  JS for the document.
+
+
 .. _wdiff: https://www.gnu.org/software/wdiff/
 
 """
@@ -58,30 +77,27 @@ TEMPLATE = """<!doctype html>
       <h1><span>{org_file}</span> vs <span>{new_file}</span></h1>
     </header>
     <section id="content">
+<!-- START OF DIFF CONTENT -->
 {content}
+<!-- END OF DIFF CONTENT -->
     </section>
+    <footer>
+      <p><kbd>HTML wdiff</kbd></p>
+    </footer>
   </article>
-</div>
+</div>  <!-- #root -->
+<script>{js}</script>
 </body>
 </html>"""
 
 CSS = """html,body,#main{margin:0;padding:0}ins,del{text-decoration:none;border:none;outline:none;padding:0 2px}html{font-size:10px;font-size:62.5%;background:#373a3c}body{color:#fff;background:#373a3c;line-height:1.5;font-size:180%;font-family:"Liberation Sans","Noto Sans","Droid Sans","Linux Biolinum","Ubuntu";font-feature-settings:"kern","liga","pnum"}header h1{color:#55595c}header h1 span{color:#fff;font-family:"Ubuntu Monospace","Liberation Mono","Droid Sans Mono"}header h1 span:before{color:#55595c;content:"`"}header h1 span:after{color:#55595c;content:"`"}h1{margin:1.5em 0 0.75em;line-height:1.2;font-weight:600;font-size:175%;color:#fff}p{line-height:1.5;margin:0 0 1.5em}p:last-child{margin-bottom:0}ins{background-color:rgba(92,184,92,0.85)}del{background-color:rgba(217,83,79,0.85);opacity:0.75}#root{max-width:800px;margin:0 auto}#content{margin:0 0 1.5em;padding:0.375em 0.75em;color:#373a3c;background:#f7f7f9;border:1px solid #818a91;border-radius:3px}
 """
 
+JS = ""
+
 
 class WdiffNotFoundError(Exception):
-
-  """
-  This exception is raised, if the `wdiff` command is not found.
-
-  """
-
-  RET_CODE = 2
-
-  ERR_MESSAGE = 'the `{}` command can\'t be found'.format(CMD_WDIFF)
-
-  def __init__(self):
-    self.args = [self.ERR_MESSAGE]
+ """This exception is raised, if the `wdiff` command is not found."""
 
 
 def parse_commandline(argv):
@@ -125,14 +141,18 @@ def check_for_wdiff():
   proc = sub.Popen(cmd, stdout=sub.DEVNULL)
   proc.wait()
   if proc.returncode != 0:
-    raise WdiffNotFoundError()
+    msg = "the `{}` command can't be found".format(CMD_WDIFF)
+    raise WdiffNotFoundError(msg)
 
 
-def generate_wdiff(org_file, new_file):
+def generate_wdiff(org_file, new_file, fold_breaks=False):
   """
   Returns the results from the `wdiff` command as a string.
 
   HTML `<ins>` and `<del>` tags will be used instead of the default markings.
+
+  If *fold_breaks* is set, `<ins>` and `<del>` tags are allowed to span
+  linesbreaks (option `-n` is not used).
 
   Raises:
 
@@ -142,21 +162,23 @@ def generate_wdiff(org_file, new_file):
   check_for_wdiff()
   cmd = [CMD_WDIFF]
   cmd.extend(OPTIONS)
+  if not fold_breaks:
+    cmd.extend(OPTIONS_LINEBREAK)
   cmd.extend([org_file, new_file])
   proc = sub.Popen(cmd, stdout=sub.PIPE)
   diff, _ = proc.communicate()
   return diff.decode('utf-8')
 
 
-def build_para(content, fold_breaks=False):
+def build_paragraph(content, fold_breaks=False):
   """
-  Returns *content* wrapped in P tags.
+  Returns *content* wrapped in `<p>` tags.
 
-  All linebreaks (`\\n`) are replaced with `<br />` tags, unless
-  *fold_breaks* is set.
+  All linebreaks (`\\n`) except the last are replaced with `<br />` tags,
+  unless *fold_breaks* is set.
 
   """
-  lines = [line.strip() for line in content.split('\n')]
+  lines = filter(None, [line.strip() for line in content.split('\n')])
   if not fold_breaks:
     for line_number in range(len(lines) - 1):
       lines[line_number] = "{}<br />".format(lines[line_number])
@@ -165,18 +187,19 @@ def build_para(content, fold_breaks=False):
 
 def wrap_paragraphs(content, fold_breaks=False):
   """
-  Returns *content* with paragraphs wrapped in P tags.
+  Returns *content* with all paragraphs wrapped in `<p>` tags.
+
+  If *fold_breaks* is set, linebreaks are not replaced with `<br />` tags.
 
   """
-  paras = [
-    build_para(para.strip(), fold_breaks) for para in content.split('\n\n')
-  ]
+  paras = filter(None, [para.strip() for para in content.split('\n\n')])
+  paras = [build_paragraph(para, fold_breaks) for para in paras]
   return '\n'.join(paras)
 
 
 def wrap_content(org_file, new_file, content):
   """
-  Returns *content* wrapped in a HTML structure as a string.
+  Returns *content* wrapped in a HTML structure.
 
   """
   context = {
@@ -184,6 +207,7 @@ def wrap_content(org_file, new_file, content):
     'new_file': Path(new_file).name,
     'content': content,
     'css': CSS,
+    'js': JS,
   }
   return TEMPLATE.format(**context)
 
@@ -193,6 +217,8 @@ def wdiff(org_file, new_file, wrap_with_html=False, fold_breaks=False):
   Returns the results of `wdiff` in a HTML compatible format.
 
   If *wrap_with_html* is set, a full HTML document is returned.
+
+  If *fold_breaks* is set, linebreaks are not replaced with `<br />` tags.
 
   """
   diff = generate_wdiff(org_file, new_file)
@@ -213,7 +239,7 @@ def main(argv=None):
     return 0
   except WdiffNotFoundError as err:
     print("ERROR: {}.".format(err), file=sys.stderr)
-    return err.RET_CODE
+    return 2
   except sub.CalledProcessError as err:
     print("ERROR: {}.".format(err), file=sys.stderr)
     return 3
