@@ -1,0 +1,42 @@
+<!doctype html>
+  <html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="application-name" content="html wdiff">
+    <title>html wdiff — {{ org_filename }} vs {{ new_filename }}</title>
+    <style>{{ css }}</style>
+  </head>
+  <body>
+  <div id="root">
+    <article id="main">
+      <header>
+        <h1><span>{{ org_filename }}</span> vs <span>{{ new_filename }}</span></h1>
+      </header>
+      {% if version or timestamp %}
+      <section id="meta">
+        <p>
+        {% if version %}
+        <span class="version">Version: <strong>{{ version }}</strong></span>
+        {%- endif %}
+        {%- if timestamp %}
+        {%- if version %}, {% endif %}
+        <time datetime="{{ timestamp }}">{{ timestamp }}</time>
+        {% endif %}
+        </p>
+      </section>
+      {% endif %}
+      <section id="content">
+  <!-- start of diff content -->
+  {{ content }}
+  <!-- end of diff content -->
+      </section>
+
+    </article>
+    <footer>
+      <p><kbd>html wdiff</kbd></p>
+    </footer>
+  </div>  <!-- #root -->
+  <script>{{ js }}</script>
+  </body>
+  </html>

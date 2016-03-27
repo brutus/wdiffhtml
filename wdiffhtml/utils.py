@@ -11,6 +11,8 @@ from __future__ import unicode_literals
 
 import subprocess as sub
 
+from jinja2 import Template
+
 from .exceptions import (
   WdiffNotFoundError,
   ContextError,
@@ -109,8 +111,9 @@ def wrap_content(content, settings, fold_breaks=False):
 
   """
   settings.context['content'] = wrap_paragraphs(content, fold_breaks)
+  template = Template(settings.template)
   try:
-    return settings.template.format(**settings.context)
+    return template.render(**settings.context)
   except KeyError as error:
     msg = "missing context setting: {}".format(error)
     raise ContextError(msg)

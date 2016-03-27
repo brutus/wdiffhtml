@@ -1,6 +1,6 @@
 # WDIFF HTML
 
-Uses [GNU wdiff] to generate a word based *diff* from plain text files.
+Uses [GNU wdiff][wdiff] to generate a word based *diff* from plain text files.
 
 The results are modified to use HTML `<ins>` and `<del>` tags and can be
 wrapped in a full HTML document.
@@ -25,8 +25,8 @@ python setup.py install [--user]
 
 # Usage
 
-To get a plain diff wich uses `<ins>` and `<del>` tags to mark changes use
-(output goes to _STDOUT_):
+`wdiffhtml` writes to _STDOUT_. To get a plain diff wich uses `<ins>` and
+`<del>` tags to mark changes use:
 
 ```
 wdiffhtml text_org.txt text_new.txt
@@ -38,10 +38,12 @@ To create a HTML file for viewing use the `--wrap-with-html` option:
 wdiffhtml --wrap-with-html text_org.txt text_new.txt > mydiff.html
 ```
 
+See `wdiffhtml --help` for more informations.
+
 
 # Contact
 
-__wdifhtml__ is at home at https://github.com/brutus/wdiffhtml
+__wdiffhtml__ is at home at https://github.com/brutus/wdiffhtml
 
 
 [wdiff]: https://www.gnu.org/software/wdiff/wdiff.html
