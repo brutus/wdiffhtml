@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
-Some functions to generate HTMLifeied diffs with `wdiff`.
+Some functions to generate HTMLified diffs with `wdiff`.
 
 """
 
@@ -11,15 +11,14 @@ from __future__ import unicode_literals
 
 import subprocess as sub
 
-from pathlib import Path
-
+from .exceptions import (
+  WdiffNotFoundError,
+  ContextError,
+)
 from .settings import (
   CMD_WDIFF,
   OPTIONS_LINEBREAK,
   OPTIONS_OUTPUT,
-  TEMPLATE,
-  CSS,
-  JS,
 )
 
 
@@ -31,10 +30,6 @@ __all__ = [
   'wrap_paragraphs',
   'wrap_content',
 ]
-
-
-class WdiffNotFoundError(Exception):
- """This exception is raised, if the `wdiff` command is not found."""
 
 
 def check_for_wdiff():
@@ -106,19 +101,16 @@ def wrap_paragraphs(content, fold_breaks=False):
   return '\n'.join(paras)
 
 
-def wrap_content(org_file, new_file, content, fold_breaks=False):
+def wrap_content(content, settings, fold_breaks=False):
   """
   Returns *content* wrapped in a HTML structure.
 
   If *fold_breaks* is set, linebreaks are not replaced with `<br />` tags.
 
   """
-  paras = wrap_paragraphs(content, fold_breaks)
-  context = {
-    'org_file': Path(org_file).name,
-    'new_file': Path(new_file).name,
-    'content': paras,
-    'css': CSS,
-    'js': JS,
-  }
-  return TEMPLATE.format(**context)
+  settings.context['content'] = wrap_paragraphs(content, fold_breaks)
+  try:
+    return settings.template.format(**settings.context)
+  except KeyError as error:
+    msg = "missing context setting: {}".format(error)
+    raise ContextError(msg)

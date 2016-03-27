@@ -25,17 +25,19 @@ __all__ = [
 ]
 
 
-def wdiff(org_file, new_file, wrap_with_html=False, fold_breaks=False):
+def wdiff(settings, wrap_with_html=False, fold_breaks=False):
   """
   Returns the results of `wdiff` in a HTML compatible format.
+
+  Needs a :cls:`settings.Settings` object.
 
   If *wrap_with_html* is set, a full HTML document is returned.
 
   If *fold_breaks* is set, linebreaks are *not* replaced with `<br />` tags.
 
   """
-  diff = generate_wdiff(org_file, new_file)
+  diff = generate_wdiff(settings.org_file, settings.new_file)
   if wrap_with_html:
-    return wrap_content(org_file, new_file, diff, fold_breaks)
+    return wrap_content(diff, settings, fold_breaks)
   else:
     return diff

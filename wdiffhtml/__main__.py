@@ -16,14 +16,26 @@ from __future__ import print_function
 import sys
 import subprocess as sub
 
-
 from argparse import ArgumentParser
+from pathlib import Path
 
 from . import (
   wdiff,
   __doc__ as docstring,
 )
-from .utils import WdiffNotFoundError
+from .settings import (
+  Settings,
+)
+from .exceptions import (
+  WdiffNotFoundError,
+  ContextError,
+)
+
+
+__all__ = [
+  'parse_commandline',
+  'main',
+]
 
 
 def parse_commandline(argv):
@@ -58,10 +70,8 @@ def main(argv=None):
   """
   Calls :func:`wdiff` and prints the results to STDERR.
 
-  Returns the *return value*.
-
-  Parses the options for :meth:`run` with :func:`get_args`. If *argv* is
-  supplied, it is used as commandline, else the actual one is used.
+  Parses the options for :meth:`wdiff` with :func:`parse_commandline`. If
+  *argv* is supplied, it is used as commandline, else the actual one is used.
 
   Return Codes
   ------------
@@ -74,11 +84,17 @@ def main(argv=None):
   """
   args = parse_commandline(argv)
   try:
-    results = wdiff(
-      args.org_file, args.new_file, args.wrap_html, args.fold_breaks
-    )
+    context = {
+      'org_filename': Path(args.org_file).name,
+      'new_filename': Path(args.new_file).name,
+    }
+    settings = Settings(args.org_file, args.new_file, **context)
+    results = wdiff(settings, args.wrap_html, args.fold_breaks)
     print(results)
     return 0
+  except ContextError as err:
+    print("ERROR: {}.".format(err), file=sys.stderr)
+    return 1
   except WdiffNotFoundError as err:
     print("ERROR: {}.".format(err), file=sys.stderr)
     return 2
