@@ -17,7 +17,6 @@ import sys
 import subprocess as sub
 
 from argparse import ArgumentParser
-from pathlib import Path
 
 from . import (
   wdiff,
@@ -84,10 +83,7 @@ def main(argv=None):
   """
   args = parse_commandline(argv)
   try:
-    context = {
-      'org_filename': Path(args.org_file).name,
-      'new_filename': Path(args.new_file).name,
-    }
+    context = {}
     settings = Settings(args.org_file, args.new_file, **context)
     results = wdiff(settings, args.wrap_with_html, args.fold_breaks)
     print(results)

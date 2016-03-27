@@ -1,0 +1,168 @@
+// --- SETTINGS -------------------------------------------------------------
+
+$max_width: 800px
+
+
+// Typography
+
+$font_sans: 'Liberation Sans', 'Noto Sans', 'Droid Sans', 'Linux Biolinum', 'Ubuntu'
+$font_serif: 'Liberation Serif', 'Noto Serif', 'Droid Serif', 'Linux Libertine'
+$font_mono: 'Ubuntu Monospace', 'Liberation Mono', 'Droid Sans Mono'
+
+$font-size: 180%  // based on `html` -> 10px
+
+$font_weight_lighter: 200
+$font_weight_normal: 400
+$font_weight_bolder: 600
+$font_weight_bold: 800
+
+$line_height: 1.5
+$heading_line_height: 1.2
+
+$base_spacing: $line_height * 1em
+$small_spacing: $base_spacing / 2
+
+
+// Colors
+
+$white: #fff
+$black: #000
+$blue: #477dca
+$pink: #c7254e
+
+$gray_lightest: #f7f7f9
+$gray_light: #eceeef
+$gray_medium: #818a91
+$gray: #55595c
+$gray_dark: #373a3c
+
+$alert_color: #f0ad4e
+$error_color: #d9534f
+$notice_color: #5bc0de
+$success_color: #5cb85c
+
+
+// Color Settings
+
+$font_color: $white
+$heading_color: $font_color
+$background_color: $gray_dark
+
+$font_color_article: $gray_dark
+$background_color_article: $gray_lightest
+$border_color_article: $gray_medium
+
+$del_color: rgba($error_color, 0.85)
+$ins_color: rgba($success_color, 0.85)
+
+
+// --- CLASSES --------------------------------------------------------------
+
+%fullspace
+  margin: 0
+  padding: 0
+
+%marked
+  text-decoration: none
+  border: none
+  outline: none
+  padding: 0 2px
+
+  // &:before,
+  // &:after
+  //   color: $gray_light
+
+
+// --- STYLES ---------------------------------------------------------------
+
+html
+  @extend %fullspace
+  font-size: 10px
+  font-size: 62.5%  // 1em ~ 10px
+  background: $background_color
+
+
+body
+  @extend %fullspace
+  color: $font_color
+  background: $background_color
+  line-height: $line_height
+  font:
+    size: $font_size  // `rem` will be relative to this
+    family: $font_sans
+    feature-settings: "kern", "liga", "pnum"
+
+
+header
+  @extend %fullspace
+
+  h1
+    color: $gray
+
+    span
+      color: $font_color
+      font-family: $font_mono
+
+      &:before
+        color: $gray
+        content: '`'
+
+      &:after
+        color: $gray
+        content: '`'
+
+
+h1
+  @extend %fullspace
+  margin: $base_spacing 0 $small_spacing
+  line-height: $heading_line_height
+  font:
+    weight: $font_weight_bolder
+    size: 175%
+  color: $heading_color
+
+
+p
+  line-height: $line_height
+  margin: 0 0 $base_spacing
+
+  &:last-child
+    margin-bottom: 0
+
+
+ins
+  @extend %marked
+  background-color: $ins_color
+
+  // &:before,
+  // &:after
+  //   content: '+'
+
+
+del
+  @extend %marked
+  background-color: $del_color
+  opacity: 0.75
+
+  // &:before,
+  // &:after
+  //   content: '-'
+
+
+#root
+  @extend %fullspace
+  max-width: $max_width
+  margin: 0 auto
+
+
+#main
+  @extend %fullspace
+
+
+#content
+  margin: 0 0 $base_spacing
+  padding: $small_spacing / 2 $small_spacing
+  color: $font_color_article
+  background: $background_color_article
+  border: 1px solid $border_color_article
+  border-radius: 3px

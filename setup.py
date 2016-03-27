@@ -58,6 +58,16 @@ setup(
   name='wdiff-HTML',
   version=VERSION,
   packages=['wdiffhtml'],
+  package_data={
+    'wdiffhtml': [
+      'data/template.html',
+      'data/styles.css',
+      'data/main.js',
+    ]
+  },
+  install_requires=[
+    'setuptools',
+  ],
   description=get_short_description(DOC),
   long_description=get_long_description('README.md'),
   keywords='',

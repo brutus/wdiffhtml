@@ -29,7 +29,4 @@ site
 invoke.json
 invoke.yaml
 # other
-misc
-html
-css
-js
+*/data/*
