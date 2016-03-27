@@ -67,7 +67,7 @@ class Settings(object):
 
   """
 
-  template = load_from_resource('template.html')
+  template = load_from_resource('template.jinja')
 
   _context = {
     'content': "",
