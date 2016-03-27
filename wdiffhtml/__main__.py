@@ -60,7 +60,7 @@ def parse_commandline(argv):
     help="fold linebreaks"
   )
   ap.add_argument(
-    '-w', '--wrap-html', action='store_true',
+    '-w', '--wrap-with-html', action='store_true',
     help="wrap the diff with HTML"
   )
   return ap.parse_args(argv)
@@ -89,7 +89,7 @@ def main(argv=None):
       'new_filename': Path(args.new_file).name,
     }
     settings = Settings(args.org_file, args.new_file, **context)
-    results = wdiff(settings, args.wrap_html, args.fold_breaks)
+    results = wdiff(settings, args.wrap_with_html, args.fold_breaks)
     print(results)
     return 0
   except ContextError as err:
