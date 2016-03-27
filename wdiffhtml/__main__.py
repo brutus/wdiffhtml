@@ -16,7 +16,10 @@ from __future__ import print_function
 import sys
 import subprocess as sub
 
-from argparse import ArgumentParser
+from argparse import (
+  ArgumentParser,
+  FileType,
+)
 from datetime import datetime
 
 from . import (
@@ -57,12 +60,12 @@ def parse_commandline(argv):
   )
   g_html = ap.add_argument_group('Wrapper')
   g_html.add_argument(
-    '-f', '--fold-breaks', action='store_true',
-    help="fold linebreaks"
-  )
-  g_html.add_argument(
     '-w', '--wrap-with-html', action='store_true',
     help="wrap the diff with HTML"
+  )
+  g_html.add_argument(
+    '-f', '--fold-breaks', action='store_true',
+    help="fold linebreaks"
   )
   g_context = ap.add_argument_group('Context')
   g_context.add_argument(
@@ -78,7 +81,41 @@ def parse_commandline(argv):
     '-D', '--timestamp', action='store_true',
     help="add date and time to the output (UTC)"
   )
+  g_files = ap.add_argument_group('Files')
+  g_files.add_argument(
+    '-t', '--template', type=FileType('r'), metavar='FILE',
+    help="load Jinja2 tremplate from this file"
+  )
+  g_files.add_argument(
+    '-c', '--css', type=FileType('r'), metavar='FILE',
+    help="load CSS from this file"
+  )
+  g_files.add_argument(
+    '-j', '--js', type=FileType('r'), metavar='FILE',
+    help="load javascript from this file"
+  )
   return ap.parse_args(argv)
+
+
+def get_context(args):
+  """
+  Returns a context from *args* (commandline arguments).
+
+  """
+  context = {}
+  if args.doc_version:
+    context['version'] = args.doc_version
+  if args.timestamp:
+    context['timestamp'] = "{:%Y-%m-%d %H:%M}".format(datetime.utcnow())
+  if args.datestamp:
+    context['timestamp'] = "{:%Y-%m-%d}".format(datetime.utcnow())
+  if args.template:
+    context['template'] = args.template.read()
+  if args.css:
+    context['css'] = args.css.read()
+  if args.js:
+    context['js'] = args.js.read()
+  return context
 
 
 def main(argv=None):
@@ -99,13 +136,7 @@ def main(argv=None):
   """
   args = parse_commandline(argv)
   try:
-    context = {}
-    if args.doc_version:
-      context['version'] = args.doc_version
-    if args.timestamp:
-      context['timestamp'] = "{:%Y-%m-%d %H:%M}".format(datetime.utcnow())
-    if args.datestamp:
-      context['timestamp'] = "{:%Y-%m-%d}".format(datetime.utcnow())
+    context = get_context(args)
     settings = Settings(args.org_file, args.new_file, **context)
     results = wdiff(settings, args.wrap_with_html, args.fold_breaks)
     print(results)
