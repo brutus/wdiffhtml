@@ -111,6 +111,11 @@ header
         color: $gray
         content: '`'
 
+footer
+  margin: 0 0 $base_spacing
+  font-size: 75%
+  text-align: center
+
 
 h1
   @extend %fullspace
@@ -142,7 +147,6 @@ ins
 del
   @extend %marked
   background-color: $del_color
-  opacity: 0.75
 
   // &:before,
   // &:after
@@ -159,6 +163,11 @@ del
   @extend %fullspace
 
 
+#meta
+  margin: 0 0 $base_spacing
+  font-size: 75%
+
+
 #content
   margin: 0 0 $base_spacing
   padding: $small_spacing / 2 $small_spacing
@@ -166,3 +175,9 @@ del
   background: $background_color_article
   border: 1px solid $border_color_article
   border-radius: 3px
+
+
+.version
+
+  strong
+    color: $pink

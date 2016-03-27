@@ -65,6 +65,12 @@ class Settings(object):
   `js`
     JS for the document.
 
+  `timestamp`
+    :cls:`datetime.datetime` of the diff (optional).
+
+  `version`
+    version of the diff (optional).
+
   """
 
   template = load_from_resource('template.jinja')

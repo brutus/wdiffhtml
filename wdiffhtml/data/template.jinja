@@ -13,6 +13,19 @@
       <header>
         <h1><span>{{ org_filename }}</span> vs <span>{{ new_filename }}</span></h1>
       </header>
+      {% if version or timestamp %}
+      <section id="meta">
+        <p>
+        {% if version %}
+        <span class="version">Version: <strong>{{ version }}</strong></span>
+        {%- endif %}
+        {%- if timestamp %}
+        {%- if version %}, {% endif %}
+        <time datetime="{{ timestamp }}">{{ timestamp }}</time>
+        {% endif %}
+        </p>
+      </section>
+      {% endif %}
       <section id="content">
   <!-- start of diff content -->
   {{ content }}
@@ -20,6 +33,9 @@
       </section>
 
     </article>
+    <footer>
+      <p><kbd>html wdiff</kbd></p>
+    </footer>
   </div>  <!-- #root -->
   <script>{{ js }}</script>
   </body>
