@@ -1,0 +1,35 @@
+# python
+*.pyc
+*.egg-info
+__pycache__
+# virtualenv
+.activate.sh
+.deactivate.sh
+# development
+*.sublime-project
+*.sublime-workspace
+.sass-cache
+node_modules
+bower_components
+# testing
+.tox
+.coverage
+htmlcov
+# building
+dist
+build
+MANIFEST
+# docs
+docs-html
+site
+# taskwarrior
+.taskrc
+.task
+# invoke
+invoke.json
+invoke.yaml
+# other
+misc
+html
+css
+js
