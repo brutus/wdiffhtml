@@ -3,11 +3,19 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-__wdiff HTML__ was originally a plain Python module created in the early 2000.
-Version 0.3.0 was made into a package and uploaded to Github. This change log
-starts with this version.
+__wdiff HTML__ was originally a plain Python module created in the early
+2000. Version 0.3.0 was made into a package and uploaded to Github. This
+change log starts with this version.
+
+
+## [0.4.0] — 2016-03-27
+
+- Added support to define own files to use as HTML template and for CSS
+  and Javascript.
+
+- Use Jinja2 instead of string templates.
 
 
 ## [0.3.0] — 2016-03-27
 
-Moved the module to a package and created a `setup.py` script.
+- Moved the module to a package and created a `setup.py` script.
