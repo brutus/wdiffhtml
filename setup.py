@@ -69,6 +69,7 @@ setup(
   install_requires=[
     'setuptools',
     'jinja2',
+    'appdirs',
   ],
   description=get_short_description(DOC),
   long_description=get_long_description('README.md'),

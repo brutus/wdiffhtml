@@ -13,6 +13,8 @@ from pathlib import Path
 
 from pkg_resources import resource_string
 
+from appdirs import user_data_dir
+
 
 __all__ = [
   'Settings',
@@ -37,8 +39,16 @@ def load_from_resource(name):
   """
   Returns the contents of a file resource.
 
+  If the resource exists in the users data directory, it is used instead
+  of the default resource.
+
   """
-  return resource_string('wdiffhtml', 'data/' + name).decode('utf-8')
+  filepath = Path(user_data_dir('wdiffhtml')) / name
+  if filepath.exists():
+    with filepath.open() as fh:
+      return fh.read()
+  else:
+    return resource_string('wdiffhtml', 'data/' + name).decode('utf-8')
 
 
 class Settings(object):
