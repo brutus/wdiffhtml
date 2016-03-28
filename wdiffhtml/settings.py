@@ -65,6 +65,9 @@ class Settings(object):
   `js`
     JS for the document.
 
+  `js`
+    Secondary JS for the document (loaded before the first, for frameworks…).
+
   `timestamp`
     :cls:`datetime.datetime` of the diff (optional).
 
@@ -79,6 +82,7 @@ class Settings(object):
     'content': "",
     'css': load_from_resource('styles.css'),
     'js': load_from_resource('main.js'),
+    'js2': load_from_resource('secondary.js'),
   }
 
   def __init__(self, org_file, new_file, template=None, **context):

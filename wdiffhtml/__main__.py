@@ -108,6 +108,10 @@ def parse_commandline(argv):
     '-j', '--js', type=FileType('r'), metavar='FILE',
     help="load Javascript from this file"
   )
+  g_files.add_argument(
+    '-J', '--js2', type=FileType('r'), metavar='FILE',
+    help="load another Javascript from this file (like Zepto)"
+  )
   # parse args
   args = ap.parse_args(argv)
   # check for wrapper
