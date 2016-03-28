@@ -2,7 +2,7 @@
 
 """
 Some global constants and a settings object, that stores the template and
-it's context along with the filenames…
+it's context along with the filenames for the diff…
 
 """
 
@@ -35,7 +35,7 @@ OPTIONS_OUTPUT = [
 
 def load_from_resource(name):
   """
-  Returns the contonts of o file resource.
+  Returns the contents of a file resource.
 
   """
   return resource_string('wdiffhtml', 'data/' + name).decode('utf-8')
@@ -51,10 +51,10 @@ class Settings(object):
   -----------------
 
   `org_filename`
-    Display version ot the name of the original file.
+    Display version of the name of the original file.
 
   `new_filename`
-    Display version ot the name of the changed file.
+    Display version of the name of the changed file.
 
   `content`
     Will contain the (HTMLified) output from `wdiff` (just a placeholder).
@@ -69,7 +69,7 @@ class Settings(object):
     :cls:`datetime.datetime` of the diff (optional).
 
   `version`
-    version of the diff (optional).
+    revision or version of the diff (optional).
 
   """
 
