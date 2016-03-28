@@ -46,7 +46,7 @@ def wdiff(settings, wrap_with_html=False, fold_breaks=False):
   `<br />` tags.
 
   """
-  diff = generate_wdiff(settings.org_file, settings.new_file)
+  diff = generate_wdiff(settings.org_file, settings.new_file, fold_breaks)
   if wrap_with_html:
     return wrap_content(diff, settings, fold_breaks)
   else:
