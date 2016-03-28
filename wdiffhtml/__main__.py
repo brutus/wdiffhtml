@@ -108,7 +108,17 @@ def parse_commandline(argv):
     '-j', '--js', type=FileType('r'), metavar='FILE',
     help="load Javascript from this file"
   )
-  return ap.parse_args(argv)
+  # parse args
+  args = ap.parse_args(argv)
+  # check for wrapper
+  if not args.wrap_with_html:
+    # check context arguments and file arguments
+    for group in (g_context, g_files):
+      args_to_check = [opt.dest for opt in group._group_actions]
+      if any([getattr(args, attr) for attr in args_to_check]):
+        msg = "the options require that `--wrap-with-html` is used"
+        ap.error(msg)
+  return args
 
 
 def get_context(args):
