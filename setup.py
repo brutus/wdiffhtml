@@ -63,6 +63,7 @@ setup(
       'data/template.html',
       'data/styles.css',
       'data/main.js',
+      'data/secondary.js',
     ]
   },
   install_requires=[
