@@ -1,43 +1,83 @@
 <!doctype html>
-  <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="application-name" content="html wdiff">
-    <title>html wdiff — {{ org_filename }} vs {{ new_filename }}</title>
-    <style>{{ css }}</style>
-  </head>
-  <body>
-  <div id="root">
-    <article id="main">
-      <header>
-        <h1><span>{{ org_filename }}</span> vs <span>{{ new_filename }}</span></h1>
-      </header>
-      {% if version or timestamp %}
-      <section id="meta">
-        <p>
-        {% if version %}
-        <span class="version">Version: <strong>{{ version }}</strong></span>
-        {%- endif %}
-        {%- if timestamp %}
-        {%- if version %}, {% endif %}
-        <time datetime="{{ timestamp }}">{{ timestamp }}</time>
-        {% endif %}
-        </p>
-      </section>
-      {% endif %}
-      <section id="content">
-  <!-- start of diff content -->
-  {{ content }}
-  <!-- end of diff content -->
-      </section>
-
-    </article>
-    <footer>
-      <p><kbd>html wdiff</kbd></p>
-    </footer>
-  </div>  <!-- #root -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="application-name" content="html wdiff">
+  <title>html wdiff — {{ org_filename }} vs {{ new_filename }}</title>
+  <style>{{ css }}</style>
   <script>{{ js2 }}</script>
   <script>{{ js }}</script>
-  </body>
-  </html>
+</head>
+<body>
+<div id="root">
+
+<article>
+
+  <header>
+    <h1><span>{{ org_filename }}</span> vs <span>{{ new_filename }}</span></h1>
+    <p class="meta">
+    {%- if version -%}
+      <span class="version">Version: <strong>{{ version }}</strong></span>
+    {%- endif -%}
+    {%- if timestamp -%}
+      {%- if version %}, {% endif -%}
+      <time datetime="{{ timestamp }}">{{ timestamp }}</time>
+    {%- endif -%}
+    &nbsp;</p>
+  </header>
+
+  <main>
+<!-- start of diff content -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- -->
+{{ content }}
+<!-- end of diff content -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- -->
+  </main>
+
+</article>
+
+
+<aside class="hidden">
+
+  <section class="controlls">
+    <h1>Removed</h1>
+    <div class="buttons">
+      <button id="del-hide" data-target="del" data-class="hidden">
+        <span>Hide</span>
+        <span class="hidden">Show</span>
+      </button>
+      <button id="del-highlight" data-target="del" data-class="no-highlight">
+        <span>No Highlights</span>
+        <span class="hidden">Highlights</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="controlls">
+    <h1>Inserted</h1>
+    <div class="buttons">
+      <button id="ins-hide" data-target="ins" data-class="hidden">
+        <span>Hide</span>
+        <span class="hidden">Show</span>
+      </button>
+      <button id="ins-highlight" data-target="ins" data-class="no-highlight">
+        <span>No Highlights</span>
+        <span class="hidden">Highlights</span>
+      </button>
+    </div>
+  </section>
+
+</aside>
+
+<button id="navcontroll" class="hidden" data-target="aside" data-class="hidden">
+  <span class="hidden">✗ Controlls</span>
+  <span>✔ Controlls</span>
+</button>
+
+<footer>
+  <p>made with ♥ and <a href="https://github.com/brutus/wdiffhtml/">wdiffhtml</a></p>
+</footer>
+
+
+</div>  <!-- #root -->
+</body>
+</html>
