@@ -60,7 +60,7 @@ setup(
   packages=['wdiffhtml'],
   package_data={
     'wdiffhtml': [
-      'data/template.html',
+      'data/template.jinja',
       'data/styles.css',
       'data/main.js',
       'data/secondary.js',
@@ -86,5 +86,10 @@ setup(
     'Environment :: Console',
     'Topic :: Text Processing',
     'Topic :: Utilities',
-  ]
+  ],
+  entry_points={
+    'console_scripts': [
+      'wdiffhtml=wdiffhtml.cli:main',
+    ],
+  },
 )
