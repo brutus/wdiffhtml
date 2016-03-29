@@ -24,6 +24,7 @@ from datetime import datetime
 
 from . import (
   wdiff,
+  __version__ as version,
   __doc__ as docstring,
 )
 from .settings import (
@@ -50,6 +51,10 @@ def parse_commandline(argv):
     prog='wdiffhtml',
     description=docstring.split('\n\n')[0],
     epilog=docstring.split('\n\n')[-2],
+  )
+  ap.add_argument(
+    '--version', action='version', version='wdiffhtml v{}'.format(version),
+    help="shows version and exits"
   )
   ap.add_argument(
     'org_file', metavar='FILENAME',
