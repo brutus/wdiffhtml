@@ -32,6 +32,10 @@ and uploaded to Github. This change log starts there.
 
 - Uploaded the package to [PyPI].
 
+### [0.5.2] — 2016-03-29
+
+- Added `--version` argument to the CLI.
+
 
 ## [0.4.0] — 2016-03-27
 
