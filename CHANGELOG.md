@@ -26,6 +26,10 @@ and uploaded to Github. This change log starts there.
 - Fixed some spelling errors and _docstrings_ and added more argument
   checking.
 
+### [0.5.1] — 2016-03-29
+
+- Fixed `setup.py`
+
 - Uploaded the package to [PyPI].
 
 
