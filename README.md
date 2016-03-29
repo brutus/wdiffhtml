@@ -32,7 +32,7 @@ python setup.py install [--user]
 wdiffhtml text_org.txt text_new.txt
 ```
 
-To create a HTML file for viewing use the `--wrap-with-html` option:
+To create a HTML file for viewing, use the `--wrap-with-html` option:
 
 ```
 wdiffhtml --wrap-with-html text_org.txt text_new.txt > mydiff.html

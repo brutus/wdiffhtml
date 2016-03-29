@@ -1,6 +1,14 @@
 // --- SETTINGS -------------------------------------------------------------
 
 $max_width: 800px
+$min_width: 300px
+
+$base_duration: 600ms
+$base_timing: ease
+
+$base_shade: 10%
+
+$top_margin: 5em
 
 
 // Typography
@@ -9,7 +17,12 @@ $font_sans: 'Liberation Sans', 'Noto Sans', 'Droid Sans', 'Linux Biolinum', 'Ubu
 $font_serif: 'Liberation Serif', 'Noto Serif', 'Droid Serif', 'Linux Libertine'
 $font_mono: 'Ubuntu Monospace', 'Liberation Mono', 'Droid Sans Mono'
 
-$font-size: 180%  // based on `html` -> 10px
+$base_font_size: 180%  // based on `html` -> 10px
+
+$font_size_small: 50%
+$font_size_smaller: 75%
+$font_size_normal: 100%
+$font_size_bigger: 133%
 
 $font_weight_lighter: 200
 $font_weight_normal: 400
@@ -21,6 +34,9 @@ $heading_line_height: 1.2
 
 $base_spacing: $line_height * 1em
 $small_spacing: $base_spacing / 2
+
+$base_padding: $small_spacing / 2
+$small_padding: $base_padding / 2
 
 
 // Colors
@@ -48,12 +64,82 @@ $font_color: $white
 $heading_color: $font_color
 $background_color: $gray_dark
 
-$font_color_article: $gray_dark
-$background_color_article: $gray_lightest
-$border_color_article: $gray_medium
+$font_color_content: $gray_dark
+$background_color_content: $gray_lightest
+$border_color_content: $gray_medium
 
 $del_color: rgba($error_color, 0.85)
 $ins_color: rgba($success_color, 0.85)
+
+$bg_color_01: rgba($background_color, 1)
+$bg_color_02: rgba($background_color, 0.85)
+
+$action_color: $blue
+$highlight_color: $pink
+
+
+// --- MIXINS ---------------------------------------------------------------
+
+=clearfix
+
+  &:after
+    clear: both
+    content: ""
+    display: table
+
+
+=button($button_color, $text_color:$white, $border_width:1px, $border_radius:3px)
+
+  $button_color: $button_color
+  $border_color: darken($button_color, $base_shade)
+  $active_color: lighten($button_color, $base_shade)
+  $active_border_color: $border_color
+
+  margin: 0 0 $small_spacing
+  padding: $base_padding $small_padding
+
+  display: inline-block
+
+  cursor: pointer
+  appearance: none !important
+  text-decoration: none !important
+  outline: 0 !important
+  user-select: none
+  white-space: nowrap
+
+  font:
+    family: $font_sans
+    weight: $font_weight_bolder
+  -webkit-font-smoothing: antialiased
+  vertical-align: middle
+
+  color: $text_color
+  background-color: $button_color
+
+  border:
+    width: $border_width
+    style: solid
+    radius: $border_radius
+    color: $border_color
+
+  transition: all $base_duration $base_timing
+
+  &:visited,
+  &:focus
+    color: $text_color
+    background-color: $button_color
+    border-color: $border_color
+
+  &:hover,
+  &:active
+    color: $text_color
+    background-color: $active_color
+    border-color: $active_border_color
+
+  &:disabled,
+  &.disabled
+    cursor: not-allowed
+    opacity: 0.5
 
 
 // --- CLASSES --------------------------------------------------------------
@@ -62,18 +148,47 @@ $ins_color: rgba($success_color, 0.85)
   margin: 0
   padding: 0
 
-%marked
-  text-decoration: none
-  border: none
-  outline: none
+
+%root-width
+  max-width: $max_width
+  min-width: $min_width
+
+
+%center
+  margin: 0 auto
+
+
+%clear-decorations
+  text-decoration: none !important
+  border: 0 !important
+  outline: 0 !important
+  -moz-appearance: none !important
+
+
+%floaty
+  width: 47%
+
+  &:nth-child(odd)
+    float: left
+
+  &:nth-child(even)
+    float: right
+
+
+.highlight
+  @extend %clear-decorations
   padding: 0 2px
+  transition: background-color $base_duration $base_timing
 
-  // &:before,
-  // &:after
-  //   color: $gray_light
+.no-highlight
+  background-color: inherit !important
 
 
-// --- STYLES ---------------------------------------------------------------
+.hidden
+  display: none
+
+
+// --- BASE -----------------------------------------------------------------
 
 html
   @extend %fullspace
@@ -88,96 +203,183 @@ body
   background: $background_color
   line-height: $line_height
   font:
-    size: $font_size  // `rem` will be relative to this
+    size: $base_font_size  // `rem` will be relative to this
     family: $font_sans
     feature-settings: "kern", "liga", "pnum"
 
 
-header
-  @extend %fullspace
-
-  h1
-    color: $gray
-
-    span
-      color: $font_color
-      font-family: $font_mono
-
-      &:before
-        color: $gray
-        content: '`'
-
-      &:after
-        color: $gray
-        content: '`'
-
-footer
-  margin: 0 0 $base_spacing
-  font-size: 75%
-  text-align: center
-
-
-h1
-  @extend %fullspace
+h1, h2, h3, h4, h5, h6
   margin: $base_spacing 0 $small_spacing
   line-height: $heading_line_height
-  font:
-    weight: $font_weight_bolder
-    size: 175%
   color: $heading_color
+  font:
+    size: $font_size_bigger
+    weight: $font_weight_bolder
 
 
 p
+  margin: 0 0 $small_spacing
   line-height: $line_height
-  margin: 0 0 $base_spacing
 
   &:last-child
     margin-bottom: 0
 
 
-ins
-  @extend %marked
-  background-color: $ins_color
+a
+  @extend %clear-decorations
+  color: $action_color
+  transition: color $base_duration $base_timing
 
-  // &:before,
-  // &:after
-  //   content: '+'
+  &:visited
+    @extend %clear-decorations
+    color: $action_color
+
+  &:focus,
+  &:hover,
+  &:active
+    @extend %clear-decorations
+    color: lighten($action_color, 20%)
+
+
+button
+  +button($action_color)
+
+  span
+    @extend %clear-decorations
+
+
+ins
+  @extend .highlight
+  background-color: $ins_color
 
 
 del
-  @extend %marked
+  @extend .highlight
   background-color: $del_color
 
-  // &:before,
-  // &:after
-  //   content: '-'
 
+// --- STRUCTURE ------------------------------------------------------------
 
 #root
   @extend %fullspace
-  max-width: $max_width
-  margin: 0 auto
+  @extend %root-width
+  @extend %center
 
 
-#main
+article
+  margin: $small_spacing 0 $base_spacing
+  transition: margin $base_duration $base_timing
+
+  header
+    margin: 0 0 $base_spacing
+
+    h1
+      margin: 0 0 $base_padding
+      color: $gray
+
+      span
+        color: $font_color
+        font-family: $font_mono
+
+        &:before
+          color: $gray
+          content: '`'
+
+        &:after
+          color: $gray
+          content: '`'
+
+  main
+    padding: $small_padding $base_padding
+    color: $font_color_content
+    background: $background_color_content
+    border: 1px solid $border_color_content
+    border-radius: 3px
+    box-shadow: 3px 3px 5px 0px #000000
+
+
+aside
   @extend %fullspace
+  @extend %root-width
+  @extend %center
+  +clearfix
+  position: fixed
+  top: 0
+  width: 100%
+  background: $background_color
+  background: linear-gradient($bg_color_01, $bg_color_01 60%, $bg_color_02)
 
 
-#meta
+footer
   margin: 0 0 $base_spacing
-  font-size: 75%
+  font-size: $font_size_smaller
+  text-align: center
+
+  p:first-child
+    transition: color $base_duration $base_timing
+    &:hover
+      color: $highlight_color
+    &:before,
+    &:after,
+      content: " — "
+
+  a
+    font-family: $font_mono
 
 
-#content
-  margin: 0 0 $base_spacing
-  padding: $small_spacing / 2 $small_spacing
-  color: $font_color_article
-  background: $background_color_article
-  border: 1px solid $border_color_article
-  border-radius: 3px
+// --- EXTRAS ---------------------------------------------------------------
+
+#navcontroll
+  position: fixed
+  top: $small_spacing
+  left: $small_spacing
+  font-size: $font_size_small
+
+
+.topspace
+  margin-top: $top_margin
+
+
+.meta
+  font-size: $font_size_smaller
 
 
 .version
 
   strong
-    color: $pink
+    color: $highlight_color
+
+
+.controlls
+  @extend %fullspace
+  @extend %floaty
+  margin-bottom: $small_spacing
+  min-width: 280px
+
+  h1
+    @extend %fullspace
+    margin-bottom: $small_spacing
+    font-size: $font_size_smaller
+    color: $heading_color
+    text-align: center
+    border-bottom: 1px solid $white
+
+
+.buttons
+  @extend %fullspace
+  +clearfix
+
+  button
+    @extend %floaty
+    min-width: 120px
+
+
+a:focus, a:active,
+button::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner,
+select::-moz-focus-inner,
+input[type="file"] > input[type="button"]::-moz-focus-inner
+  border: 0
+  outline : 0

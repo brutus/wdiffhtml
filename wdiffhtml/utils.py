@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
 """
@@ -51,14 +50,15 @@ def check_for_wdiff():
     raise WdiffNotFoundError(msg)
 
 
-def generate_wdiff(org_file, new_file, fold_breaks=False):
+def generate_wdiff(org_file, new_file, fold_breaks=False, html=True):
   """
   Returns the results from the `wdiff` command as a string.
 
   HTML `<ins>` and `<del>` tags will be used instead of the default markings.
 
   If *fold_breaks* is set, `<ins>` and `<del>` tags are allowed to span
-  linesbreaks (option `-n` is not used).
+  lines breaks (option `-n` is not used). If *html* is not set, the output
+  of `wdiff` is returned as it is.
 
   Raises:
 
@@ -67,7 +67,8 @@ def generate_wdiff(org_file, new_file, fold_breaks=False):
   """
   check_for_wdiff()
   cmd = [CMD_WDIFF]
-  cmd.extend(OPTIONS_OUTPUT)
+  if html:
+    cmd.extend(OPTIONS_OUTPUT)
   if not fold_breaks:
     cmd.extend(OPTIONS_LINEBREAK)
   cmd.extend([org_file, new_file])
@@ -80,7 +81,7 @@ def build_paragraph(content, fold_breaks=False):
   """
   Returns *content* wrapped in `<p>` tags.
 
-  All linebreaks (`\\n`) except the last are prepended with `<br />` tags,
+  All line breaks (`\\n`) except the last are converted to `<br />` tags,
   unless *fold_breaks* is set.
 
   """
@@ -95,7 +96,7 @@ def wrap_paragraphs(content, fold_breaks=False):
   """
   Returns *content* with all paragraphs wrapped in `<p>` tags.
 
-  If *fold_breaks* is set, linebreaks are not replaced with `<br />` tags.
+  If *fold_breaks* is set, line breaks are converted to `<br />` tags.
 
   """
   paras = filter(None, [para.strip() for para in content.split('\n\n')])
@@ -107,7 +108,7 @@ def wrap_content(content, settings, fold_breaks=False):
   """
   Returns *content* wrapped in a HTML structure.
 
-  If *fold_breaks* is set, linebreaks are not replaced with `<br />` tags.
+  If *fold_breaks* is set, line breaks are converted to `<br />` tags.
 
   """
   settings.context['content'] = wrap_paragraphs(content, fold_breaks)

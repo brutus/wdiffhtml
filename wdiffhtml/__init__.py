@@ -24,10 +24,13 @@ __all__ = [
   'wdiff',
 ]
 
-__version__ = '0.4.0'
+__version__ = '0.5.0'
+
 __author__ = 'Brutus [DMC] <brutus.dmc@googlemail.com>'
-__license__ = 'GNU General Public License v3 or above - '\
-              'http://www.opensource.org/licenses/gpl-3.0.html'
+__license__ = (
+  'GNU General Public License v3 or above - ',
+  'http://www.opensource.org/licenses/gpl-3.0.html',
+)
 
 
 def wdiff(settings, wrap_with_html=False, fold_breaks=False):
@@ -36,12 +39,14 @@ def wdiff(settings, wrap_with_html=False, fold_breaks=False):
 
   Needs a :cls:`settings.Settings` object.
 
-  If *wrap_with_html* is set, a full HTML document is returned.
+  If *wrap_with_html* is set, the *diff* is returned in a full HTML document
+  structure.
 
-  If *fold_breaks* is set, linebreaks are *not* replaced with `<br />` tags.
+  If *fold_breaks* is set, line breaks **are not** replaced with
+  `<br />` tags.
 
   """
-  diff = generate_wdiff(settings.org_file, settings.new_file)
+  diff = generate_wdiff(settings.org_file, settings.new_file, fold_breaks)
   if wrap_with_html:
     return wrap_content(diff, settings, fold_breaks)
   else:

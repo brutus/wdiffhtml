@@ -2,7 +2,7 @@
 
 """
 Some global constants and a settings object, that stores the template and
-it's context along with the filenames…
+it's context along with the filenames for the diff…
 
 """
 
@@ -12,6 +12,8 @@ from __future__ import unicode_literals
 from pathlib import Path
 
 from pkg_resources import resource_string
+
+from appdirs import user_data_dir
 
 
 __all__ = [
@@ -35,10 +37,18 @@ OPTIONS_OUTPUT = [
 
 def load_from_resource(name):
   """
-  Returns the contonts of o file resource.
+  Returns the contents of a file resource.
+
+  If the resource exists in the users data directory, it is used instead
+  of the default resource.
 
   """
-  return resource_string('wdiffhtml', 'data/' + name).decode('utf-8')
+  filepath = Path(user_data_dir('wdiffhtml')) / name
+  if filepath.exists():
+    with filepath.open() as fh:
+      return fh.read()
+  else:
+    return resource_string('wdiffhtml', 'data/' + name).decode('utf-8')
 
 
 class Settings(object):
@@ -51,10 +61,10 @@ class Settings(object):
   -----------------
 
   `org_filename`
-    Display version ot the name of the original file.
+    Display version of the name of the original file.
 
   `new_filename`
-    Display version ot the name of the changed file.
+    Display version of the name of the changed file.
 
   `content`
     Will contain the (HTMLified) output from `wdiff` (just a placeholder).
@@ -65,11 +75,14 @@ class Settings(object):
   `js`
     JS for the document.
 
+  `js`
+    Secondary JS for the document (loaded before the first, for frameworks…).
+
   `timestamp`
     :cls:`datetime.datetime` of the diff (optional).
 
   `version`
-    version of the diff (optional).
+    revision or version of the diff (optional).
 
   """
 
@@ -79,6 +92,7 @@ class Settings(object):
     'content': "",
     'css': load_from_resource('styles.css'),
     'js': load_from_resource('main.js'),
+    'js2': load_from_resource('secondary.js'),
   }
 
   def __init__(self, org_file, new_file, template=None, **context):

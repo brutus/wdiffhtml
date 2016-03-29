@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
-Function to make the `wdiffhtml` package run-able.
+Some function for CLI use and to to make the `wdiffhtml` package run-able.
 
 These are also used by the start-skript - ``wdiffhtml`` - which is
 created if this this package is installed.
@@ -47,6 +47,7 @@ def parse_commandline(argv):
 
   """
   ap = ArgumentParser(
+    prog='wdiffhtml',
     description=docstring.split('\n\n')[0],
     epilog=docstring.split('\n\n')[-2],
   )
@@ -58,33 +59,46 @@ def parse_commandline(argv):
     'new_file', metavar='FILENAME',
     help="changed file"
   )
-  g_html = ap.add_argument_group('Wrapper')
+  g_html = ap.add_argument_group(
+    'Wrapper',
+    "Without these settings, only the `wdiff` output is returned (with INS "
+    "and DEL tags). Here are some options to wrap the output in a HTML "
+    "document."
+  )
   g_html.add_argument(
     '-w', '--wrap-with-html', action='store_true',
-    help="wrap the diff with HTML"
+    help="wrap the diff with a HTML document"
   )
   g_html.add_argument(
     '-f', '--fold-breaks', action='store_true',
-    help="fold linebreaks"
+    help="fold line breaks (no BR tags in paragraphs)"
   )
-  g_context = ap.add_argument_group('Context')
+  g_context = ap.add_argument_group(
+    'Context',
+    "With these options you can add additional information to the HTML "
+    "output (means these only work alongside the `--wrap-with-html` option)."
+  )
   g_context.add_argument(
-    '-v', '--doc-version', metavar='STRING',
-    help="add a revision version to the output"
+    '-r', '--revision', metavar='STRING',
+    help="add a revision tag or version number to the output"
   )
   x_stamp = g_context.add_mutually_exclusive_group()
   x_stamp.add_argument(
     '-d', '--datestamp', action='store_true',
-    help="add a date to the output (UTC)"
+    help="add a date to the output (UTC now)"
   )
   x_stamp.add_argument(
     '-D', '--timestamp', action='store_true',
-    help="add date and time to the output (UTC)"
+    help="add date and time to the output (UTC now)"
   )
-  g_files = ap.add_argument_group('Files')
+  g_files = ap.add_argument_group(
+    'Files',
+    "Instead of using the default templates, you can use your own files. "
+    "These only work alongside the `--wrap-with-html` option"
+  )
   g_files.add_argument(
     '-t', '--template', type=FileType('r'), metavar='FILE',
-    help="load Jinja2 tremplate from this file"
+    help="load the Jinja2 template from this file"
   )
   g_files.add_argument(
     '-c', '--css', type=FileType('r'), metavar='FILE',
@@ -92,23 +106,37 @@ def parse_commandline(argv):
   )
   g_files.add_argument(
     '-j', '--js', type=FileType('r'), metavar='FILE',
-    help="load javascript from this file"
+    help="load Javascript from this file"
   )
-  return ap.parse_args(argv)
+  g_files.add_argument(
+    '-J', '--js2', type=FileType('r'), metavar='FILE',
+    help="load another Javascript from this file (like Zepto)"
+  )
+  # parse args
+  args = ap.parse_args(argv)
+  # check for wrapper
+  if not args.wrap_with_html:
+    # check context arguments and file arguments
+    for group in (g_context, g_files):
+      args_to_check = [opt.dest for opt in group._group_actions]
+      if any([getattr(args, attr) for attr in args_to_check]):
+        msg = "the options require that `--wrap-with-html` is used"
+        ap.error(msg)
+  return args
 
 
 def get_context(args):
   """
-  Returns a context from *args* (commandline arguments).
+  Returns a context from the namespace *args* (command line arguments).
 
   """
   context = {}
-  if args.doc_version:
-    context['version'] = args.doc_version
-  if args.timestamp:
-    context['timestamp'] = "{:%Y-%m-%d %H:%M}".format(datetime.utcnow())
+  if args.revision:
+    context['version'] = args.revision
   if args.datestamp:
     context['timestamp'] = "{:%Y-%m-%d}".format(datetime.utcnow())
+  if args.timestamp:
+    context['timestamp'] = "{:%Y-%m-%d %H:%M}".format(datetime.utcnow())
   if args.template:
     context['template'] = args.template.read()
   if args.css:
@@ -123,7 +151,7 @@ def main(argv=None):
   Calls :func:`wdiff` and prints the results to STDERR.
 
   Parses the options for :meth:`wdiff` with :func:`parse_commandline`. If
-  *argv* is supplied, it is used as commandline, else the actual one is used.
+  *argv* is supplied, it is used as command line, else the actual one is used.
 
   Return Codes
   ------------

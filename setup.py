@@ -63,11 +63,13 @@ setup(
       'data/template.html',
       'data/styles.css',
       'data/main.js',
+      'data/secondary.js',
     ]
   },
   install_requires=[
     'setuptools',
     'jinja2',
+    'appdirs',
   ],
   description=get_short_description(DOC),
   long_description=get_long_description('README.md'),
