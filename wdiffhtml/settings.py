@@ -34,6 +34,8 @@ OPTIONS_OUTPUT = [
   '--end-insert', '</ins>',
 ]
 
+USER_DIR = user_data_dir('wdiffhtml')
+
 
 def load_from_resource(name):
   """
@@ -43,7 +45,7 @@ def load_from_resource(name):
   of the default resource.
 
   """
-  filepath = Path(user_data_dir('wdiffhtml')) / name
+  filepath = Path(USER_DIR) / name
   if filepath.exists():
     with filepath.open() as fh:
       return fh.read()

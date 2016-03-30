@@ -38,6 +38,11 @@ To create a HTML file for viewing, use the `--wrap-with-html` option:
 wdiffhtml --wrap-with-html text_org.txt text_new.txt > mydiff.html
 ```
 
+You can use your own HTML template, CSS and / or Javascript to wrap the output.
+There are commandline options to set the files on fly, or you can create them in
+your data directory (`~/.local/share/wdiffhtml/`) so they get used
+automatically.
+
 See `wdiffhtml --help` for more informations.
 
 
