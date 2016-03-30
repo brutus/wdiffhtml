@@ -36,6 +36,10 @@ and uploaded to Github. This change log starts there.
 
 - Added `--version` argument to the CLI.
 
+### [0.5.3] — 2016-03-30
+
+- Fixed [Invoke] helper task.
+
 
 ## [0.4.0] — 2016-03-27
 
