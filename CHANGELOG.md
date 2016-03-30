@@ -44,6 +44,10 @@ and uploaded to Github. This change log starts there.
 
 - Changed name for [PyPI].
 
+### [0.5.5] — 2016-03-30
+
+- Updated README about user generated files.
+
 
 ## [0.4.0] — 2016-03-27
 
