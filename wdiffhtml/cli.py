@@ -25,9 +25,9 @@ from datetime import datetime
 from . import (
   wdiff,
   __version__ as version,
-  __doc__ as docstring,
 )
 from .settings import (
+  USER_DIR,
   Settings,
 )
 from .exceptions import (
@@ -42,6 +42,16 @@ __all__ = [
 ]
 
 
+DESCRIPTION = """Generates a word based *diff* from plain text files.
+Uses `GNU wdiff` to generate the diff and changes the output to a
+HTML compatible format (`INS` and `DEL` tags)."""
+
+EPILOG = """The default files for the HTML wrapper are called
+`template.jinja`, `styles.css`, `main.js` and `secondary.js`.
+You can replace them with your own, if you create these files in your data
+directory (`{}`).""".format(USER_DIR)
+
+
 def parse_commandline(argv):
   """
   Returns the arguments parsed from *argv* as a namespace.
@@ -49,8 +59,8 @@ def parse_commandline(argv):
   """
   ap = ArgumentParser(
     prog='wdiffhtml',
-    description=docstring.split('\n\n')[0],
-    epilog=docstring.split('\n\n')[-2],
+    description=DESCRIPTION,
+    epilog=EPILOG,
   )
   ap.add_argument(
     '--version', action='version', version='wdiffhtml v{}'.format(version),

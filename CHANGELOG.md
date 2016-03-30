@@ -10,10 +10,10 @@ and uploaded to Github. This change log starts there.
 
 ## [0.5.0] — 2016-03-29
 
-- Added support for files in the __users data directory__ (`~/.local/wdiff` on
-  Linux). If this directory contains files named like the defaults
-  (`template.jinja`, `styles.css`, `main.js`, `secondary.js`), they replace
-  the defaults.
+- Added support for user genrated files in the __users data directory__
+  (`~/.local/share/wdiff` on Linux). If this directory contains files named
+  like the defaults (`template.jinja`, `styles.css`, `main.js`, `secondary.js`),
+  they replace the defaults.
 
 - Added support for additional Javascript. `secondary.js` is loaded before
   `main.js` (e.g. for frameworks like Zepto).
@@ -43,6 +43,10 @@ and uploaded to Github. This change log starts there.
 ### [0.5.4] — 2016-03-30
 
 - Changed name for [PyPI].
+
+### [0.5.5] — 2016-03-30
+
+- Updated README about user generated files.
 
 
 ## [0.4.0] — 2016-03-27
