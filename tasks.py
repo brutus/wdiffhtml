@@ -32,9 +32,9 @@ def change_dir(directory):
   def cd_decorator(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-      org_path = Path.cwd()
+      org_path = os.getcwd()
       os.chdir(directory)
-      return func(*args, **kwargs)
+      func(*args, **kwargs)
       os.chdir(org_path)
     return wrapper
   return cd_decorator
