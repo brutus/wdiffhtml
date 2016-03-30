@@ -40,6 +40,10 @@ and uploaded to Github. This change log starts there.
 
 - Fixed [Invoke] helper task.
 
+### [0.5.4] — 2016-03-30
+
+- Changed name for [PyPI].
+
 
 ## [0.4.0] — 2016-03-27
 
