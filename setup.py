@@ -55,7 +55,7 @@ VERSION, DOC = get_meta()
 
 
 setup(
-  name='wdiff-HTML',
+  name='wdiffhtml',
   version=VERSION,
   packages=['wdiffhtml'],
   package_data={
