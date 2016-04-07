@@ -7,7 +7,7 @@ __wdiff HTML__ was originally a plain Python module (and before that a Perl
 script) created in the early 2000s. Version [0.3.0] was made into a package
 and uploaded to Github. This change log starts there.
 
-## [0.6.0] — 2016-04-07z
+## [0.6.0] — 2016-04-07
 
 - Better Python 2 support:
 
@@ -22,7 +22,7 @@ and uploaded to Github. This change log starts there.
 
 ## [0.5.0] — 2016-03-29
 
-- Added support for user genrated files in the __users data directory__
+- Added support for user generated files in the __users data directory__
   (`~/.local/share/wdiff` on Linux). If this directory contains files named
   like the defaults (`template.jinja`, `styles.css`, `main.js`, `secondary.js`),
   they replace the defaults.
@@ -30,7 +30,7 @@ and uploaded to Github. This change log starts there.
 - Added support for additional Javascript. `secondary.js` is loaded before
   `main.js` (e.g. for frameworks like Zepto).
 
-- Added Javasacript to controll buttons that show and hide the changes.
+- Added Javascript to control buttons that show and hide the changes.
 
 - Added [Invoke] tasks to build Javascript from [CoffeeScript] and CSS
   from [SASS].
