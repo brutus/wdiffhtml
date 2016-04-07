@@ -25,7 +25,6 @@ from .settings import (
 
 
 __all__ = [
-  'WdiffNotFoundError',
   'check_for_wdiff',
   'generate_wdiff',
   'build_paragraph',
