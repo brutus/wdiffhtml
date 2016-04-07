@@ -19,6 +19,14 @@ and uploaded to Github. This change log starts there.
 
 - Small code cleanups and argument renaming.
 
+## [0.6.1] — 2016-04-07
+
+- Make utility function available from _init_.
+
+- Update docs.
+
+- Fixed some spelling errors.
+
 
 ## [0.5.0] — 2016-03-29
 
