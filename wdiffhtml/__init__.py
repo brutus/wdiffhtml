@@ -24,7 +24,7 @@ __all__ = [
   'wdiff',
 ]
 
-__version__ = '0.5.5'
+__version__ = '0.6.0'
 
 __author__ = 'Brutus [DMC] <brutus.dmc@googlemail.com>'
 __license__ = (
@@ -33,7 +33,9 @@ __license__ = (
 )
 
 
-def wdiff(settings, wrap_with_html=False, fold_breaks=False):
+def wdiff(
+  settings, wrap_with_html=False, fold_breaks=False, hard_breaks=False
+):
   """
   Returns the results of `wdiff` in a HTML compatible format.
 
@@ -42,12 +44,14 @@ def wdiff(settings, wrap_with_html=False, fold_breaks=False):
   If *wrap_with_html* is set, the *diff* is returned in a full HTML document
   structure.
 
-  If *fold_breaks* is set, line breaks **are not** replaced with
-  `<br />` tags.
+  If *fold_breaks* is set, `<ins>` and `<del>` tags are allowed to span line
+  breaks
+
+  If *hard_breaks* is set, line breaks are replaced with `<br />` tags.
 
   """
   diff = generate_wdiff(settings.org_file, settings.new_file, fold_breaks)
   if wrap_with_html:
-    return wrap_content(diff, settings, fold_breaks)
+    return wrap_content(diff, settings, hard_breaks)
   else:
     return diff

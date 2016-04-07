@@ -7,6 +7,18 @@ __wdiff HTML__ was originally a plain Python module (and before that a Perl
 script) created in the early 2000s. Version [0.3.0] was made into a package
 and uploaded to Github. This change log starts there.
 
+## [0.6.0] — 2016-04-07z
+
+- Better Python 2 support:
+
+  - Fixed Unicode handling.
+
+  - Install dependencies automatically.
+
+- Added tests.
+
+- Small code cleanups and argument renaming.
+
 
 ## [0.5.0] — 2016-03-29
 
@@ -72,3 +84,9 @@ and uploaded to Github. This change log starts there.
 [0.3.0]: https://github.com/brutus/wdiffhtml/tree/0.3.0
 [0.4.0]: https://github.com/brutus/wdiffhtml/tree/0.4.0
 [0.5.0]: https://github.com/brutus/wdiffhtml/tree/0.5.0
+[0.5.1]: https://github.com/brutus/wdiffhtml/tree/0.5.1
+[0.5.2]: https://github.com/brutus/wdiffhtml/tree/0.5.2
+[0.5.3]: https://github.com/brutus/wdiffhtml/tree/0.5.3
+[0.5.4]: https://github.com/brutus/wdiffhtml/tree/0.5.4
+[0.5.5]: https://github.com/brutus/wdiffhtml/tree/0.5.5
+[0.6.0]: https://github.com/brutus/wdiffhtml/tree/0.6.0

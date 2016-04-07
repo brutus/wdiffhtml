@@ -38,7 +38,7 @@ from .exceptions import (
 
 __all__ = [
   'parse_commandline',
-  'main',
+  'run_cli',
 ]
 
 
@@ -85,8 +85,12 @@ def parse_commandline(argv):
     help="wrap the diff with a HTML document"
   )
   g_html.add_argument(
-    '-f', '--fold-breaks', action='store_true',
-    help="fold line breaks (no BR tags in paragraphs)"
+    '-f', '--fold-tags', action='store_true',
+    help="allow INS and DEL tags to span linebraks"
+  )
+  g_html.add_argument(
+    '-b', '--hard-breaks', action='store_true',
+    help="replace line breaks with BR tags"
   )
   g_context = ap.add_argument_group(
     'Context',
@@ -161,7 +165,7 @@ def get_context(args):
   return context
 
 
-def main(argv=None):
+def run_cli(argv=None):
   """
   Calls :func:`wdiff` and prints the results to STDERR.
 
@@ -181,7 +185,9 @@ def main(argv=None):
   try:
     context = get_context(args)
     settings = Settings(args.org_file, args.new_file, **context)
-    results = wdiff(settings, args.wrap_with_html, args.fold_breaks)
+    results = wdiff(
+      settings, args.wrap_with_html, args.fold_tags, args.hard_breaks
+    )
     print(results)
     return 0
   except ContextError as err:
@@ -196,4 +202,4 @@ def main(argv=None):
 
 
 if __name__ == '__main__':
-  sys.exit(main())
+  sys.exit(run_cli())
