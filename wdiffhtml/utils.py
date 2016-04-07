@@ -50,15 +50,15 @@ def check_for_wdiff():
     raise WdiffNotFoundError(msg)
 
 
-def generate_wdiff(org_file, new_file, fold_breaks=False, html=True):
+def generate_wdiff(org_file, new_file, fold_tags=False, html=True):
   """
   Returns the results from the `wdiff` command as a string.
 
-  HTML `<ins>` and `<del>` tags will be used instead of the default markings.
+  HTML `<ins>` and `<del>` tags will be used instead of the default markings,
+  unless *html* is set to `False`.
 
-  If *fold_breaks* is set, `<ins>` and `<del>` tags are allowed to span
-  lines breaks (option `-n` is not used). If *html* is not set, the output
-  of `wdiff` is returned as it is.
+  If *fold_tags* is set, `<ins>` and `<del>` tags are allowed to span line
+  breaks (option `-n` is not used).
 
   Raises:
 
@@ -69,7 +69,7 @@ def generate_wdiff(org_file, new_file, fold_breaks=False, html=True):
   cmd = [CMD_WDIFF]
   if html:
     cmd.extend(OPTIONS_OUTPUT)
-  if not fold_breaks:
+  if not fold_tags:
     cmd.extend(OPTIONS_LINEBREAK)
   cmd.extend([org_file, new_file])
   proc = sub.Popen(cmd, stdout=sub.PIPE)
@@ -77,41 +77,40 @@ def generate_wdiff(org_file, new_file, fold_breaks=False, html=True):
   return diff.decode('utf-8')
 
 
-def build_paragraph(content, fold_breaks=False):
+def build_paragraph(content, hard_breaks=False):
   """
   Returns *content* wrapped in `<p>` tags.
 
-  All line breaks (`\\n`) except the last are converted to `<br />` tags,
-  unless *fold_breaks* is set.
+  If *hard_breaks* is `True`, all line breaks are converted to `<br />` tags.
 
   """
   lines = list(filter(None, [line.strip() for line in content.split('\n')]))
-  if not fold_breaks:
+  if hard_breaks:
     for line_number in range(len(lines) - 1):
       lines[line_number] = "{}<br />".format(lines[line_number])
   return "<p>{}</p>".format('\n'.join(lines))
 
 
-def wrap_paragraphs(content, fold_breaks=False):
+def wrap_paragraphs(content, hard_breaks=False):
   """
   Returns *content* with all paragraphs wrapped in `<p>` tags.
 
-  If *fold_breaks* is set, line breaks are converted to `<br />` tags.
+  If *hard_breaks* is set, line breaks are converted to `<br />` tags.
 
   """
   paras = filter(None, [para.strip() for para in content.split('\n\n')])
-  paras = [build_paragraph(para, fold_breaks) for para in paras]
+  paras = [build_paragraph(para, hard_breaks) for para in paras]
   return '\n'.join(paras)
 
 
-def wrap_content(content, settings, fold_breaks=False):
+def wrap_content(content, settings, hard_breaks=False):
   """
   Returns *content* wrapped in a HTML structure.
 
-  If *fold_breaks* is set, line breaks are converted to `<br />` tags.
+  If *hard_breaks* is set, line breaks are converted to `<br />` tags.
 
   """
-  settings.context['content'] = wrap_paragraphs(content, fold_breaks)
+  settings.context['content'] = wrap_paragraphs(content, hard_breaks)
   template = Template(settings.template)
   try:
     return template.render(**settings.context)

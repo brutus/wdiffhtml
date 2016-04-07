@@ -89,7 +89,7 @@ setup(
   ],
   entry_points={
     'console_scripts': [
-      'wdiffhtml=wdiffhtml.cli:main',
+      'wdiffhtml=wdiffhtml.cli:run_cli',
     ],
   },
 )
