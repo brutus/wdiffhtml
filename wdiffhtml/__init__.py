@@ -50,7 +50,7 @@ __all__ = [
   'wrap_content',
 ]
 
-__version__ = '0.6.0'
+__version__ = '0.6.1'
 
 __author__ = 'Brutus [DMC] <brutus.dmc@googlemail.com>'
 __license__ = (
