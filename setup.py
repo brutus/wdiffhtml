@@ -53,6 +53,31 @@ def get_long_description(filename):
 
 VERSION, DOC = get_meta()
 
+INSTALL_REQUIRES = [
+  'setuptools',
+  'jinja2',
+  'appdirs',
+]
+
+PY2_REQUIRES = [
+  'pathlib',
+]
+
+EXTRAS_REQUIRE = {
+  'test': [
+    'testfixtures',
+    'tox',
+  ],
+  'dev': [
+    'bumpversion',
+    'invoke',
+  ],
+}
+
+
+if sys.version_info < (3,):
+  INSTALL_REQUIRES.extend(PY2_REQUIRES)
+
 
 setup(
   name='wdiffhtml',
@@ -66,11 +91,8 @@ setup(
       'data/secondary.js',
     ]
   },
-  install_requires=[
-    'setuptools',
-    'jinja2',
-    'appdirs',
-  ],
+  install_requires=INSTALL_REQUIRES,
+  extras_require=EXTRAS_REQUIRE,
   description=get_short_description(DOC),
   long_description=get_long_description('README.md'),
   keywords='',
