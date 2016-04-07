@@ -24,7 +24,7 @@ __all__ = [
   'wdiff',
 ]
 
-__version__ = '0.5.5'
+__version__ = '0.6.0'
 
 __author__ = 'Brutus [DMC] <brutus.dmc@googlemail.com>'
 __license__ = (
