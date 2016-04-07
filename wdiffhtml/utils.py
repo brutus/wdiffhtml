@@ -9,6 +9,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 import subprocess as sub
+import os
 
 from jinja2 import Template
 
@@ -43,8 +44,10 @@ def check_for_wdiff():
 
   """
   cmd = ['which', CMD_WDIFF]
-  proc = sub.Popen(cmd, stdout=sub.DEVNULL)
+  DEVNULL = open(os.devnull, 'wb')
+  proc = sub.Popen(cmd, stdout=DEVNULL)
   proc.wait()
+  DEVNULL.close()
   if proc.returncode != 0:
     msg = "the `{}` command can't be found".format(CMD_WDIFF)
     raise WdiffNotFoundError(msg)

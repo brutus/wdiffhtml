@@ -1,5 +1,9 @@
 # -*- coding: UTF-8 -*-
 
+from __future__ import absolute_import
+from __future__ import unicode_literals
+from __future__ import print_function
+
 from unittest import TestCase
 from collections import namedtuple
 
@@ -40,8 +44,8 @@ class TestWdiff(TestCase):
   def test_plain(self):
     for case in self.CASES:
       with TempDirectory() as tempd:
-        org_file = tempd.write('org', case.org.encode())
-        new_file = tempd.write('new', case.new.encode())
+        org_file = tempd.write('org', case.org.encode('utf-8'))
+        new_file = tempd.write('new', case.new.encode('utf-8'))
         res = generate_wdiff(
           org_file, new_file, fold_tags=False, html=True
         )
@@ -50,8 +54,8 @@ class TestWdiff(TestCase):
   def test_nofolded(self):
     for case in self.CASES:
       with TempDirectory() as tempd:
-        org_file = tempd.write('org', case.org.encode())
-        new_file = tempd.write('new', case.new.encode())
+        org_file = tempd.write('org', case.org.encode('utf-8'))
+        new_file = tempd.write('new', case.new.encode('utf-8'))
         res = generate_wdiff(
           org_file, new_file, fold_tags=True, html=True
         )
@@ -60,8 +64,8 @@ class TestWdiff(TestCase):
   def test_nohtml(self):
     for case in self.CASES:
       with TempDirectory() as tempd:
-        org_file = tempd.write('org', case.org.encode())
-        new_file = tempd.write('new', case.new.encode())
+        org_file = tempd.write('org', case.org.encode('utf-8'))
+        new_file = tempd.write('new', case.new.encode('utf-8'))
         res = generate_wdiff(
           org_file, new_file, fold_tags=False, html=False
         )
