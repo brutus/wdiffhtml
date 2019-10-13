@@ -1,2 +1,2 @@
 bumpversion==0.5.3
-invoke
+invoke==1.3.0
