@@ -1,2 +1,2 @@
-testfixtures
+testfixtures==6.10.0
 tox
